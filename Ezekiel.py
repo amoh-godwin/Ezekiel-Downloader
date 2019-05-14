@@ -11,6 +11,7 @@ class Main():
 
     def __init__(self):
         self.FILTER_WORDS = {'': ""}
+        self.StoreSiteNameAndRepl = {}    // this stores sitename and its replacement that we used
         self.startWebPage = ""
         self.enteredUrl = ""
         self.fixedUrl = ""  # from fix
