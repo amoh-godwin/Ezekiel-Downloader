@@ -2,6 +2,7 @@
 
 import sys
 import re
+from urllib.parse import urlparse
 from urllib.request import urlopen
 
 
@@ -17,6 +18,7 @@ class Main():
         self.startWebPage = ""
         self.enteredUrl = ""
         self.fixedUrl = ""  # from fix
+        self.commonPath = "" # contains the option folder name eg. 'php/intermediate'
         self.commonName = ""  # / becomes index.html  and the like
         self.passedUrl = ""  # from protocol, This is the one that gets crawled
 
@@ -97,18 +99,29 @@ class Main():
 
     def _fix_url(self):
         # fix the url before we can continue
-        # do nothing for now
-        if self.enteredUrl:
+        # append only http for now
+        if '://' not in self.enteredUrl:
+            self.fixedUrl = 'http://' + self.enteredUrl
+        else:
             self.fixedUrl = self.enteredUrl
-            return True
+
+        return True
 
     def _store_common_name(self, addr):
+        parsed = urlparse(addr)
+        path = parsed.path
         self.commonName = addr
         return True
 
     def _check_protocol(self, web_addr):
+        # check the protocol of the address
+        if 'ftp://' in web_addr:
+            protocol = 'ftp'
+        elif web_addr.startswith(('http://', 'https://')):
+            protocol = 'http'
+
         self.passedUrl = web_addr
-        return True
+        return protocol
 
     def _download_data(self, link):
         # pass
