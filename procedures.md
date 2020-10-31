@@ -21,3 +21,7 @@
 - clear all other variables
 
 - repeat
+
+# Checking to see if external url is a file
+# The url may contain dots(.)
+# eg: https://www.facebook.com/we.are.xampp
