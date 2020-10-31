@@ -35,6 +35,7 @@ class Main():
         self.replacedDownloadedStringData = ""
 
     def prepare(self, web_page_link):
+        print('Inside prepare\n')
         # More like the __init__ func
         # just this one is exposed
 
@@ -45,6 +46,7 @@ class Main():
         self.start(self.startWebPage)
 
     def start(self, web_address):
+        print('Inside start\n')
         # Calls all the process
 
         # get address
@@ -82,6 +84,7 @@ class Main():
             self._store_bytes_data(data)
 
     def get_address(self, webpage_addr):
+        print('Inside get_address\n')
         # split to avoid the url duplication in some urls
         raw_addr = [n for n in re.split(r'https://|http://', webpage_addr) if n != ''][0]
         # remove unacceptable characters
@@ -98,6 +101,7 @@ class Main():
         return True
 
     def _fix_url(self):
+        print('Inside _fix_url\n')
         # fix the url before we can continue
         # append only http for now
         if '://' not in self.enteredUrl:
@@ -108,12 +112,14 @@ class Main():
         return True
 
     def _store_common_name(self, addr):
+        print('Inside _store_common_name\n')
         parsed = urlparse(addr)
         path = parsed.path
         self.commonName = addr
         return True
 
     def _check_protocol(self, web_addr):
+        print('Inside _check_protocol\n')
         # check the protocol of the address
         if 'ftp://' in web_addr:
             protocol = 'ftp'
@@ -124,49 +130,60 @@ class Main():
         return protocol
 
     def _download_data(self, link):
+        print('Inside _download_data\n')
         # pass
         data = b''
         return data
 
     def _check_type_of_data(self, data):
+        print('Inside _check_type_of_data\n')
         # pass
         dt = {'type': "", 'name': ""}
         return dt
 
     def _store_str_data(self, data):
+        print('Inside _store_str_data\n')
         # pass
         pass
 
     def _store_bytes_data(self, data):
+        print('Inside _store_bytes_data\n')
         # pass
         pass
 
     def _parser(self, data):
+        print('Inside _parser\n')
         # pass
         pass
 
     def _gather_links(self, data):
+        print('Inside _gather_links\n')
         # pass
         pass
 
     def _replace_data(self, key=None, data=None):
+        print('Inside _replace_data\n')
         return data
 
     def _save_data_offline(self, data):
+        print('Inside _save_data_offline\n')
         # pass
         pass
 
     def _check_for_more_urls(self):
+        print('Inside _check_for_more_urls\n')
         # pass
         pass
 
     def _clear(self):
+        print('Inside _clear\n')
         # pass
         pass
 
     def _repeat_process(self):
+        print('Inside _repeat_process\n')
         # pass
         pass
 
 main = Main()
-main.prepare("https://www.w3schools.com/html/default.asp/http://")
+main.prepare("https://localhost")
