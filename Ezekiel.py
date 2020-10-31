@@ -182,7 +182,8 @@ class Main():
 
     def _parser(self, data):
         print('Inside _parser\n')
-        # pass
+        # The use of this function
+        # may have been taken up by _gather_links
         pass
 
     def _gather_links(self, data):
