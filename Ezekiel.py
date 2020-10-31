@@ -113,9 +113,13 @@ class Main():
 
     def _store_common_name(self, addr):
         print('Inside _store_common_name\n')
-        parsed = urlparse(addr)
-        path = parsed.path
-        self.commonName = addr
+        cmnName = ''
+        scheme, netloc, path, params, query, fragment = urlparse(addr)
+        if path in ['', '/']:
+            cmnName = 'index.html'
+        else:
+            cmnName = path
+        self.commonName = cmnName
         return True
 
     def _check_protocol(self, web_addr):
@@ -124,6 +128,9 @@ class Main():
         if 'ftp://' in web_addr:
             protocol = 'ftp'
         elif web_addr.startswith(('http://', 'https://')):
+            protocol = 'http'
+        else:
+            print('unknown protocol shoud raise an Exception')
             protocol = 'http'
 
         self.passedUrl = web_addr
@@ -186,4 +193,4 @@ class Main():
         pass
 
 main = Main()
-main.prepare("https://localhost")
+main.prepare("https://localhost/")
