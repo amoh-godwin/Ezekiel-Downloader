@@ -29,6 +29,8 @@ class Main():
         self.downloadedBytesData = b""
 
         # Parse Data
+        self.htmlLinkTags = ['a', 'img']
+        self.cssLinkTags = []
         self.newlyFoundUrls = []
         self.toCrawlUrls = []
         self.crawledUrls = []
