@@ -114,11 +114,15 @@ class Main():
         print('Inside _store_common_name\n')
         cmnName = ''
         scheme, netloc, path, params, query, fragment = urlparse(addr)
-        if path in ['', '/']:
+
+        paths = path.rsplit('/', 1)
+        if paths[-1] == '':
             cmnName = 'index.html'
         else:
-            cmnName = path
+            cmnName = paths[-1]
+
         self.commonName = cmnName
+        self.commonPath = paths[0]
         return True
 
     def _check_protocol(self, web_addr):
