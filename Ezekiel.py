@@ -66,9 +66,6 @@ class Main():
         # protocol
         self._check_protocol(self.fixedUrl)
 
-        # check common name
-        self._store_common_name(self.passedUrl)
-
         # Download
         data = self._download_data(self.passedUrl)
         # check if html, css or image mainly string or bytes
@@ -138,8 +135,12 @@ class Main():
 
     def _download_data(self, link):
         print('Inside _download_data\n')
-        # pass
-        data = b''
+        req = urlopen(link)
+
+        # check common name
+        self._store_common_name(req.geturl())
+        print(self.commonName)
+
         return data
 
     def _check_type_of_data(self, data):

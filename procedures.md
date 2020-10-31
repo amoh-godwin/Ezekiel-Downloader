@@ -2,10 +2,10 @@
 - Get the first webpage address
 
 - fix the url
-- store a common name
 - Check url protocol on the fixed url
 
 - download the data
+- store common name
 - check type of data
 - store in a variable
 
