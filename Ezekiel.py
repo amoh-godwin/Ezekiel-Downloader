@@ -5,6 +5,8 @@ import re
 from urllib.parse import urlparse
 from urllib.request import urlopen
 
+import chardet
+
 
 class Main():
 
@@ -68,7 +70,7 @@ class Main():
 
         # Download
         data = self._download_data(self.passedUrl)
-        # check if html, css or image mainly string or bytes
+        # Check if html, css or image. Basically string or bytes
         dt = self._check_type_of_data(data)
         if dt['type'] == 'string':
             self._store_str_data(data)
@@ -139,14 +141,26 @@ class Main():
 
         # check common name
         self._store_common_name(req.geturl())
-        print(self.commonName)
 
+        data = req.read()
         return data
 
     def _check_type_of_data(self, data):
         print('Inside _check_type_of_data\n')
-        # pass
         dt = {'type': "", 'name': ""}
+        
+        # Using charder
+        confidence = chardet.detect(data)['confidence']
+        if confidence > 0.5:
+            dt['type'] = 'string'
+
+            if '<html' in str(data):
+                dt['name'] = 'html'
+            else:
+                dt['name'] = 'css'
+
+        else:
+            dt['type'] = 'bytes'
         return dt
 
     def _store_str_data(self, data):
@@ -194,4 +208,5 @@ class Main():
         pass
 
 main = Main()
+#main.prepare("https://localhost/img/module_table_bottom.png")
 main.prepare("https://localhost/")
