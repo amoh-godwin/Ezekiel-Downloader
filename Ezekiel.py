@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import os
 import re
 from urllib.parse import urlparse
 from urllib.request import urlopen
@@ -14,9 +15,13 @@ class Main():
     """
 
     def __init__(self):
+        # Ezekiel
+        self.store_folder = os.environ["USERPROFILE"]
+
         self.FILTER_WORDS = {'': ""}
         self.ILLEGAL_CHARS_PATN = r'[;]'
         self.StoreSiteNameAndRepl = {}    # this stores sitename and its replacement that we used
+        self.domain = ""
         self.startWebPage = ""
         self.enteredUrl = ""
         self.fixedUrl = ""  # from fix
@@ -44,6 +49,11 @@ class Main():
 
         # Replacement Data
         self.replacedDownloadedStringData = ""
+
+        # Download
+        # external
+        self.allowedExtExt = ['.css', '.js', '.html', '.xhtml',
+        '.xml', '.pdf', '.png', '.jpg', '.jpeg', '.gif']
 
     def prepare(self, web_page_link):
         print('Inside prepare\n')
@@ -123,6 +133,7 @@ class Main():
         print('Inside _store_common_name\n')
         cmnName = ''
         scheme, netloc, path, params, query, fragment = urlparse(addr)
+        self.domain = netloc
 
         paths = path.rsplit('/', 1)
         if paths[-1] == '':
@@ -224,8 +235,19 @@ class Main():
 
     def _replace_data(self, key=None, data=None):
         print('Inside _replace_data\n')
-        for link in self.newlyFoundUrls:
-            pass
+        # because we are storing everything as they are
+        # as if on the server this might be useful only for external
+        folder_name = os.path.join(self.store_folder,
+        self.domain, "__external")
+
+        for link in self.newlyFoundExtUrls:
+            scheme, netloc, path, params, query, fragment = urlparse(link)
+            ext = os.path.splitext(path)[-1]
+            if ext in self.allowedExtExt:
+                new_link = "__external/" + link.split('//', 1)[-1]
+                data = data.replace(
+                    bytes(link, 'utf-8'), bytes(new_link, 'utf-8'))
+
         return data
 
     def _save_data_offline(self, data):
