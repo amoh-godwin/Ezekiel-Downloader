@@ -16,7 +16,7 @@ class Main():
 
     def __init__(self):
         # Ezekiel
-        self.store_folder = os.environ["USERPROFILE"]
+        self.store_folder = os.path.join(os.environ["USERPROFILE"], 'Ezekiel')
 
         self.FILTER_WORDS = {'': ""}
         self.ILLEGAL_CHARS_PATN = r'[;]'
@@ -39,11 +39,13 @@ class Main():
         # local
         self.newlyFoundUrls = []
         self.toCrawlUrls = []
+        self.crawlingUrl = ''
         self.crawledUrls = []
         self.downloadedUrls = []
         # external
         self.newlyFoundExtUrls = []
         self.toCrawlExtUrls = []
+        self.crawlingExtUrl = ''
         self.crawledExtUrls = []
         self.downloadedExtUrls = []
 
@@ -143,6 +145,7 @@ class Main():
 
         self.commonName = cmnName
         self.commonPath = paths[0]
+        self.crawlingUrl = self.commonPath + '/' + self.commonName
         return True
 
     def _check_protocol(self, web_addr):
@@ -230,6 +233,7 @@ class Main():
                 if o not in found_local \
                 and o not in self.downloadedExtUrls])
 
+        self.crawledUrls.append(self.crawlingUrl)
         self.newlyFoundUrls.extend(found_local)
         self.newlyFoundExtUrls.extend(found_ext)
 
@@ -237,8 +241,6 @@ class Main():
         print('Inside _replace_data\n')
         # because we are storing everything as they are
         # as if on the server this might be useful only for external
-        folder_name = os.path.join(self.store_folder,
-        self.domain, "__external")
 
         for link in self.newlyFoundExtUrls:
             scheme, netloc, path, params, query, fragment = urlparse(link)
@@ -252,8 +254,15 @@ class Main():
 
     def _save_data_offline(self, data):
         print('Inside _save_data_offline\n')
-        # pass
-        pass
+        folder_name = os.path.realpath(os.path.join(
+            self.store_folder,
+            self.domain) + self.commonPath)
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
+        path = os.path.join(folder_name, self.commonName)
+        with open(path, 'wb') as online_file:
+            online_file.write(data)
+            self.downloadedUrls.append(self.crawlingUrl)
 
     def _check_for_more_urls(self):
         print('Inside _check_for_more_urls\n')
