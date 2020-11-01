@@ -35,10 +35,12 @@ class Main():
         self.newlyFoundUrls = []
         self.toCrawlUrls = []
         self.crawledUrls = []
+        self.downloadedUrls = []
         # external
         self.newlyFoundExtUrls = []
         self.toCrawlExtUrls = []
         self.crawledExtUrls = []
+        self.downloadedExtUrls = []
 
         # Replacement Data
         self.replacedDownloadedStringData = ""
@@ -209,16 +211,21 @@ class Main():
 
             found_local.extend([n for n in all_links \
                 if not n.startswith('http') \
-                and not n.startswith('//')])
+                and not n.startswith('//') \
+                and n not in self.crawledUrls \
+                and n not in self.downloadedUrls])
 
             found_ext.extend([o for o in all_links \
-                if o not in found_local])
+                if o not in found_local \
+                and o not in self.downloadedExtUrls])
 
         self.newlyFoundUrls.extend(found_local)
         self.newlyFoundExtUrls.extend(found_ext)
 
     def _replace_data(self, key=None, data=None):
         print('Inside _replace_data\n')
+        for link in self.newlyFoundUrls:
+            pass
         return data
 
     def _save_data_offline(self, data):
