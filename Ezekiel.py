@@ -29,11 +29,16 @@ class Main():
         self.downloadedBytesData = b""
 
         # Parse Data
-        self.htmlLinkTags = ['a', 'img']
-        self.cssLinkTags = []
+        self.htmlLinkPatt = ['href', 'src']
+        self.cssLinkPatt = []
+        # local
         self.newlyFoundUrls = []
         self.toCrawlUrls = []
         self.crawledUrls = []
+        # external
+        self.newlyFoundExtUrls = []
+        self.toCrawlExtUrls = []
+        self.crawledExtUrls = []
 
         # Replacement Data
         self.replacedDownloadedStringData = ""
@@ -190,8 +195,27 @@ class Main():
 
     def _gather_links(self, data):
         print('Inside _gather_links\n')
-        # pass
-        pass
+        # Gather links from either html or css
+        # Still using data passed via parameter
+        data = str(data)
+        found_local = []
+        found_ext = []
+        for tag in self.htmlLinkPatt:
+            patt = r'' + tag + '=["|\'].*?.*?.*?["|\']'
+            attr_links = re.findall(patt, data)
+            s_ind = len(tag) + 2
+            l_ind = -1
+            all_links = [m[s_ind:l_ind] for m in attr_links]
+
+            found_local.extend([n for n in all_links \
+                if not n.startswith('http') \
+                and not n.startswith('//')])
+
+            found_ext.extend([o for o in all_links \
+                if o not in found_local])
+
+        self.newlyFoundUrls.extend(found_local)
+        self.newlyFoundExtUrls.extend(found_ext)
 
     def _replace_data(self, key=None, data=None):
         print('Inside _replace_data\n')
@@ -210,6 +234,10 @@ class Main():
     def _clear(self):
         print('Inside _clear\n')
         # pass
+        pass
+
+    def _handle_external(self, links):
+        # carefully process links that are external
         pass
 
     def _repeat_process(self):
