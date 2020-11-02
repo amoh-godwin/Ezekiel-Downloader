@@ -174,6 +174,13 @@ class Main():
         data = req.read()
         return data
 
+    def _download_ext_data(self, link):
+        print('Inside _download_data\n')
+        req = urlopen(link)
+
+        data = req.read()
+        return data
+
     def _check_type_of_data(self, data):
         print('Inside _check_type_of_data\n')
         dt = {'type': "", 'name': ""}
