@@ -276,6 +276,19 @@ class Main():
             online_file.write(data)
             self.downloadedUrls.append(self.crawlingUrl)
 
+    def _save_ext_data_offline(self, data, link):
+        # handle saving external file offline
+        print('Inside _save_ext_data_offline')
+
+        new_link = '__external/' + link.split('//', 1)[-1]
+        path_name, cmnName = os.path.split(new_link)
+        folder_name = os.path.join(self.domainFolder, path_name)
+        if not os.path.exists(folder_name):
+            os.makedirs(folder_name)
+        fileName = os.path.join(folder_name, cmnName)
+        with open(fileName, 'wb') as ext_file:
+            ext_file.write(data)
+
     def _check_for_more_urls(self):
         print('Inside _check_for_more_urls\n')
         # pass
