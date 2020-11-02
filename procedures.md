@@ -17,6 +17,10 @@
 - Save the data
 
 - handle external urls
+  - download ext data
+   - downloading data currently does not check for redirections
+     because replace has already happened.
+  - save data offline
 
 - check if more urls exist
 
