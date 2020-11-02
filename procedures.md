@@ -12,10 +12,11 @@
 - check if parsable
 - parse to
   - gather more urls ++++
-  - handler external urls
   - replace data
 
 - Save the data
+
+- handle external urls
 
 - check if more urls exist
 
@@ -32,9 +33,8 @@ Checking to see if external url is a file
 The downloaded should be kept in a folder
  - folder name should be the domain
  - filenames should be based on the filenames itself
- - resources should be kept in a '{domain}_files' by the html
+ - resources should be organised as they are as if on the server
  - the external should be kept in folder named __external
-   in the {domain}_files folder
  - external should be organised this way:
    - __external
      - facebook.com
