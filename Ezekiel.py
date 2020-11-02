@@ -258,9 +258,10 @@ class Main():
 
     def _save_data_offline(self, data):
         print('Inside _save_data_offline\n')
-        folder_name = os.path.realpath(os.path.join(
+        self.domainFolder = os.path.realpath(os.path.join(
             self.store_folder,
-            self.domain) + self.commonPath)
+            self.domain))
+        folder_name = self.domainFolder + self.commonPath
         if not os.path.exists(folder_name):
             os.makedirs(folder_name)
         path = os.path.join(folder_name, self.commonName)
