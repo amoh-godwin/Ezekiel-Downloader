@@ -17,6 +17,7 @@ class Main():
     def __init__(self):
         # Ezekiel
         self.store_folder = os.path.join(os.environ["USERPROFILE"], 'Ezekiel')
+        self.domainFolder = ''
 
         self.FILTER_WORDS = {'': ""}
         self.ILLEGAL_CHARS_PATN = r'[;]'
@@ -100,6 +101,7 @@ class Main():
                 self._gather_links(data)
                 self.replacedDownloadedStringData = self._replace_data(data=data)
                 self._save_data_offline(self.replacedDownloadedStringData)
+                self._handle_external(self.newlyFoundExtUrls)
         else:
             self._store_bytes_data(data)
 
@@ -229,9 +231,14 @@ class Main():
                 and n not in self.crawledUrls \
                 and n not in self.downloadedUrls])
 
-            found_ext.extend([o for o in all_links \
+            # add links to external
+            for o in all_links:
                 if o not in found_local \
-                and o not in self.downloadedExtUrls])
+                and o not in self.downloadedExtUrls:
+                    sch, netl, path, query, pms, frag = urlparse(o)
+                    ext = os.path.splitext(path)[-1]
+                    if ext in self.allowedExtExt:
+                        found_ext.append(o)
 
         self.crawledUrls.append(self.crawlingUrl)
         self.newlyFoundUrls.extend(found_local)
@@ -243,12 +250,9 @@ class Main():
         # as if on the server this might be useful only for external
 
         for link in self.newlyFoundExtUrls:
-            scheme, netloc, path, params, query, fragment = urlparse(link)
-            ext = os.path.splitext(path)[-1]
-            if ext in self.allowedExtExt:
-                new_link = "__external/" + link.split('//', 1)[-1]
-                data = data.replace(
-                    bytes(link, 'utf-8'), bytes(new_link, 'utf-8'))
+            new_link = "__external/" + link.split('//', 1)[-1]
+            data = data.replace(
+                bytes(link, 'utf-8'), bytes(new_link, 'utf-8'))
 
         return data
 
