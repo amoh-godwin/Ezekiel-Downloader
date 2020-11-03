@@ -126,6 +126,16 @@ class Main():
         self._check_for_more_urls()
         self._clear()
 
+    def _check_top_level(self, web_addr):
+        print('Inside _check_top_level\n')
+        # Check to see if the addr
+        # goes beyound the level of
+        # the entered webpage
+        _, _, path, _, _, _ = urlparse(web_addr)
+        depth = [n for n in path.split('/') if n]
+        if len(depth) >= self.topLevelDepth:
+            return True
+
     def get_address(self, webpage_addr):
         print('Inside get_address\n')
         # split to avoid the url duplication in some urls
