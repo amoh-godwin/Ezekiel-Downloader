@@ -259,8 +259,12 @@ class Main():
         # because we are storing everything as they are
         # as if on the server this might be useful only for external
 
+        # External is available only in the domain folder
+        backpaths = '../' * (len(self.commonPath.split('/')) - 1)
+        ext_folder = backpaths + '__external/'
+
         for link in self.newlyFoundExtUrls:
-            new_link = "__external/" + link.split('//', 1)[-1]
+            new_link = ext_folder + link.split('//', 1)[-1]
             data = data.replace(
                 bytes(link, 'utf-8'), bytes(new_link, 'utf-8'))
 
