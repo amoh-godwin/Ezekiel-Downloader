@@ -407,9 +407,17 @@ class Main():
         while self.toCrawlUrls:
             # Take the first one
             # the first one should change all the time
-            web_addr = self.currScheme + \
-                self.domain + self.toCrawlUrls[0]
+            curr = self.toCrawlUrls[0]
+            if curr not in self.downloadedUrls and \
+                curr not in self.crawledUrls:
+                # this function is local so we can just add a '/'
+                if curr[0] != '/':
+                    curr = '/' + curr
+
+                web_addr = self.currScheme + \
+                self.domain + curr
             print(f'About to start on {web_addr}')
+            self.crawlingUrl = curr
             self.start(web_addr)
             break
 
