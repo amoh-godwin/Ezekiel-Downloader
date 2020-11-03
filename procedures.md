@@ -15,8 +15,8 @@
 
 - check if parsable
 - parse to
-  - gather more urls ++++
-  - replace data
+  - gather more urls
+  - replace data ++++
 
 - Save the data
 
