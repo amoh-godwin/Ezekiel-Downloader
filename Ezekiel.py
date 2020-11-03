@@ -179,7 +179,7 @@ class Main():
         return data
 
     def _download_ext_data(self, link):
-        print('Inside _download_data\n')
+        print('Inside _download_ext_data\n')
         if not link.startswith('http'):
             link = 'http:' + link
 
