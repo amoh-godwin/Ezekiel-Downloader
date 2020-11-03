@@ -71,7 +71,6 @@ class Main():
 
         # Set top level
         self._set_top_level()
-        return
 
         # call the start
         self.start(self.startWebPage)
@@ -155,6 +154,7 @@ class Main():
         # Check to see if the addr
         # goes beyound the level of
         # the entered webpage
+        # returns true if so
         _, _, path, _, _, _ = urlparse(web_addr)
         depth = [n for n in path.split('/') if n]
         if len(depth) < self.topLevelDepth:
