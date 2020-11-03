@@ -69,16 +69,21 @@ class Main():
         # Set variable
         self.startWebPage = web_page_link
 
+        # Set top level
+        self._set_top_level()
+        return
+
         # call the start
         self.start(self.startWebPage)
 
         # call to repeat itself
         self._repeat_process()
 
-    def _set_top_level():
+    def _set_top_level(self):
         print('Inside _set_top_level\n')
-        # Prevent going beyound top level
-        pass
+        sh, net, path, _, _, _ = urlparse(self.startWebPage)
+        depth = [n for n in path.split('/') if n]
+        self.topLevelDepth = len(depth)
 
     def start(self, web_address):
         print('Inside start\n')
