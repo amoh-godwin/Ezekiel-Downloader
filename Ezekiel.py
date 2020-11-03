@@ -102,6 +102,7 @@ class Main():
                 self.replacedDownloadedStringData = self._replace_data(data=data)
                 self._save_data_offline(self.replacedDownloadedStringData)
                 self._handle_external(self.newlyFoundExtUrls)
+                self._check_for_more_urls()
         else:
             self._store_bytes_data(data)
 
