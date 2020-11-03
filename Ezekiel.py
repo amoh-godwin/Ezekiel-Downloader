@@ -22,14 +22,15 @@ class Main():
         self.FILTER_WORDS = {'': ""}
         self.ILLEGAL_CHARS_PATN = r'[;]'
         self.StoreSiteNameAndRepl = {}    # this stores sitename and its replacement that we used
-        self.currScheme = ""
-        self.domain = ""
+        self.topLevelDepth = 0
         self.startWebPage = ""
         self.enteredUrl = ""
         self.fixedUrl = ""  # from fix
         self.commonPath = "" # contains the option folder name eg. 'php/intermediate'
         self.commonName = ""  # / becomes index.html  and the like
         self.passedUrl = ""  # from protocol, This is the one that gets crawled
+        self.currScheme = ""
+        self.domain = ""
 
         # Data
         self.downloadedStringData = ""
@@ -73,6 +74,11 @@ class Main():
 
         # call to repeat itself
         self._repeat_process()
+
+    def _set_top_level():
+        print('Inside _set_top_level\n')
+        # Prevent going beyound top level
+        pass
 
     def start(self, web_address):
         print('Inside start\n')

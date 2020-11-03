@@ -1,6 +1,8 @@
 # Procedures
 - Get the first webpage address
 
+- Prevent beyound top level crawling
+
 - fix the url
 - Check url protocol on the fixed url
 
