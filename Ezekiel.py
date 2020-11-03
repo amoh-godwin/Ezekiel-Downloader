@@ -231,9 +231,8 @@ class Main():
         for tag in self.htmlLinkPatt:
             patt = r'' + tag + r'\s*=\s*["|\'].*?.*?.*?["|\']'
             attr_links = re.findall(patt, data)
-            s_ind = len(tag) + 2
-            l_ind = -1
-            all_links = [m[s_ind:l_ind] for m in attr_links]
+            all_links = [m.split('=', 1)[1].strip()[1:-1] \
+                for m in attr_links]
 
             found_local.extend([n for n in all_links \
                 if not n.startswith('http') \
