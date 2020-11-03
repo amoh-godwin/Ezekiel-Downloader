@@ -93,6 +93,7 @@ class Main():
             pass
         else:
             print('get_address: err')
+            self.toCrawlUrls.remove(self.crawlingUrl)
             return False
 
         # fix add
@@ -171,7 +172,11 @@ class Main():
         # Try url decoding
         if nn:
             print('Error. This is not a valid Url')
-            return False
+            for key in self.FILTER_WORDS:
+                if key in raw_addr:
+                    raw_addr = raw_addr.replace(key,
+                    self.FILTER_WORDS[key])
+            return True
 
         # set the working address
         self.enteredUrl = raw_addr
