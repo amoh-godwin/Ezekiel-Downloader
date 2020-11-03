@@ -36,6 +36,7 @@ class Main():
         self.downloadedBytesData = b""
 
         # Parse Data
+        self.parseableExt = ['html', 'css', 'js', 'xhtml', 'xml']
         self.htmlLinkPatt = ['href', 'src']
         self.cssLinkPatt = []
         # local
@@ -70,6 +71,9 @@ class Main():
         # call the start
         self.start(self.startWebPage)
 
+        # call to repeat itself
+        self._repeat_process()
+
     def start(self, web_address):
         print('Inside start\n')
         # Calls all the process
@@ -97,16 +101,17 @@ class Main():
         dt = self._check_type_of_data(data)
         if dt['type'] == 'string':
             self._store_str_data(data)
-            if dt['name'] is 'html':
+            if dt['name'] in self.parseableExt:
                 self._parser(data)
                 self._gather_links(data)
                 self.replacedDownloadedStringData = self._replace_data(data=data)
-                self._save_data_offline(self.replacedDownloadedStringData)
                 self._handle_external(self.newlyFoundExtUrls)
+
+            self._save_data_offline(self.replacedDownloadedStringData)
         else:
             self._store_bytes_data(data)
             self._save_data_offline(self.downloadedBytesData)
-
+ 
         self._check_for_more_urls()
         self._clear()
 
@@ -293,6 +298,9 @@ class Main():
         path = os.path.join(folder_name, self.commonName)
         with open(path, 'wb') as online_file:
             online_file.write(data)
+            if self.crawlingUrl in self.toCrawlUrls:
+                print(f'{self.crawlingUrl} in self.toCrawlUrls')
+                self.toCrawlUrls.remove(self.crawlingUrl)
             self.downloadedUrls.append(self.crawlingUrl)
 
     def _save_ext_data_offline(self, data, link):
