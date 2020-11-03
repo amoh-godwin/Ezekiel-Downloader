@@ -22,6 +22,7 @@ class Main():
         self.FILTER_WORDS = {'': ""}
         self.ILLEGAL_CHARS_PATN = r'[;]'
         self.StoreSiteNameAndRepl = {}    # this stores sitename and its replacement that we used
+        self.currScheme = ""
         self.domain = ""
         self.startWebPage = ""
         self.enteredUrl = ""
@@ -142,6 +143,7 @@ class Main():
         cmnName = ''
         scheme, netloc, path, params, query, fragment = urlparse(addr)
         self.domain = netloc
+        self.currScheme = scheme + '://'
 
         paths = path.rsplit('/', 1)
         if paths[-1] == '':
@@ -159,8 +161,12 @@ class Main():
         # check the protocol of the address
         if 'ftp://' in web_addr:
             protocol = 'ftp'
-        elif web_addr.startswith(('http://', 'https://')):
+        elif web_addr.startswith('https://'):
+            protocol = 'https'
+            self.currScheme = 'https://'
+        elif web_addr.startswith('http://'):
             protocol = 'http'
+            self.currScheme = 'http://'
         else:
             print('unknown protocol shoud raise an Exception')
             protocol = 'http'
