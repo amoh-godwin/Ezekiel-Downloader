@@ -431,7 +431,8 @@ class Main():
 
         # local
         self.newlyFoundUrls = []
-        self.toCrawlUrls = self.toCrawlUrls[0:]
+        if self.crawlingUrl in self.toCrawlUrls:
+            self.toCrawlUrls.remove(self.crawlingUrl)
         self.crawledUrls.append(self.crawlingUrl)
         self.crawledUrls = list(set(self.crawledUrls))
         print('added to crawled', self.crawlingUrl)
