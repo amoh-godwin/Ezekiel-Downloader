@@ -297,8 +297,13 @@ class Main():
 
     def _check_for_more_urls(self):
         print('Inside _check_for_more_urls\n')
-        # pass
-        pass
+        # put all links if any in toCrawlUrls
+        if self.newlyFoundUrls:
+            self.toCrawlUrls.extend([u \
+                for u in self.newlyFoundUrls \
+                if u not in self.toCrawlUrls \
+                if not u.startswith('#')])
+            return True
 
     def _clear(self):
         print('Inside _clear\n')
