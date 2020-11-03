@@ -113,6 +113,8 @@ class Main():
         # check the top level
         if self._beyound_top_level(self.passedUrl):
             print("Beyound Top level, won't crawl")
+            self.toCrawlUrls.remove(self.crawlingUrl)
+            self.crawledUrls.append(self.crawlingUrl)
             return False
 
         if self._exist(self.passedUrl):
