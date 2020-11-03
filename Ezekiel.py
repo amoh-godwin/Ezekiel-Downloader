@@ -324,7 +324,7 @@ class Main():
         self.replacedDownloadedStringData = ""
 
     def _handle_external(self, links):
-        print('inside _handle_external')
+        print('inside _handle_external\n')
         # carefully process links that are external
         for link in links:
             data = self._download_ext_data(link)
