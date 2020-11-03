@@ -336,8 +336,17 @@ class Main():
         backpaths = '../' * (len(self.commonPath.split('/')) - 1)
         ext_folder = backpaths + '__external/'
 
+        # External
         for link in self.newlyFoundExtUrls:
             new_link = ext_folder + link.split('//', 1)[-1]
+            data = data.replace(
+                bytes(link, 'utf-8'), bytes(new_link, 'utf-8'))
+        # Local
+        for link in self.newlyFoundUrls:
+            if link[0] != '/':
+                new_link = './' + link
+            else:
+                new_link = '..' + link
             data = data.replace(
                 bytes(link, 'utf-8'), bytes(new_link, 'utf-8'))
 
