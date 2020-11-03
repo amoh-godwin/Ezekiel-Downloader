@@ -117,21 +117,22 @@ class Main():
 
         # Download
         data = self._download_data(self.passedUrl)
-        # Check if html, css or image. Basically string or bytes
-        dt = self._check_type_of_data(data)
-        if dt['type'] == 'string':
-            self._store_str_data(data)
-            if dt['name'] in self.parseableExt:
-                self._parser(data)
-                self._gather_links(data)
-                self.replacedDownloadedStringData = self._replace_data(data=data)
-                self._handle_external(self.newlyFoundExtUrls)
+        if data:
+            # Check if html, css or image. Basically string or bytes
+            dt = self._check_type_of_data(data)
+            if dt['type'] == 'string':
+                self._store_str_data(data)
+                if dt['name'] in self.parseableExt:
+                    self._parser(data)
+                    self._gather_links(data)
+                    self.replacedDownloadedStringData = self._replace_data(data=data)
+                    self._handle_external(self.newlyFoundExtUrls)
 
-            self._save_data_offline(self.replacedDownloadedStringData)
-        else:
-            self._store_bytes_data(data)
-            self._save_data_offline(self.downloadedBytesData)
- 
+                self._save_data_offline(self.replacedDownloadedStringData)
+            else:
+                self._store_bytes_data(data)
+                self._save_data_offline(self.downloadedBytesData)
+
         self._check_for_more_urls()
         self._clear()
 
@@ -233,7 +234,10 @@ class Main():
 
     def _download_data(self, link):
         print('Inside _download_data\n')
-        req = urlopen(link)
+        try:
+            req = urlopen(link)
+        except:
+            return False
 
         # check common name
         self._store_common_name(link, req.geturl())
