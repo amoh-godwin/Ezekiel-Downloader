@@ -307,8 +307,11 @@ class Main():
         pass
 
     def _handle_external(self, links):
+        print('inside _handle_external')
         # carefully process links that are external
-        pass
+        for link in links:
+            data = self._download_ext_data(link)
+            self._save_ext_data_offline(data, link)
 
     def _repeat_process(self):
         print('Inside _repeat_process\n')
