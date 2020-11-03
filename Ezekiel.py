@@ -111,6 +111,11 @@ class Main():
             print("Beyound Top level, won't crawl")
             return False
 
+        if self._exist(self.passedUrl):
+            print(f'{self.passedUrl} has already been downloaded. Skipping')
+            self.toCrawlUrls.remove(self.crawlingUrl)
+            return False
+
         # Download
         data = self._download_data(self.passedUrl)
         # Check if html, css or image. Basically string or bytes
