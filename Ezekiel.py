@@ -176,15 +176,15 @@ class Main():
         self.domain = netloc
         self.currScheme = scheme + '://'
 
-        paths = path.rsplit('/', 1)
-        if paths[-1] == '':
-            cmnName = 'index.html'
-        else:
-            cmnName = paths[-1]
+        self.commonName = addr.rsplit('/', 1)[-1]
+        self.commonPath = path.rsplit('/', 1)[0]
 
-        self.commonName = cmnName
-        self.commonPath = paths[0]
         self.crawlingUrl = self.commonPath + '/' + self.commonName
+        # handle redirection
+        if old != addr:
+            if old in self.toCrawlUrls:
+                ind = self.toCrawlUrls.index(old)
+                self.toCrawlUrls[ind] = self.crawlingUrl
         return True
 
     def _check_protocol(self, web_addr):
@@ -210,7 +210,7 @@ class Main():
         req = urlopen(link)
 
         # check common name
-        self._store_common_name(req.geturl())
+        self._store_common_name(link, req.geturl())
 
         data = req.read()
         return data
@@ -321,7 +321,12 @@ class Main():
         folder_name = self.domainFolder + self.commonPath
         if not os.path.exists(folder_name):
             os.makedirs(folder_name)
-        path = os.path.join(folder_name, self.commonName)
+        
+        if self.commonName:
+            name = self.commonName
+        else:
+            name = 'index.html'
+        path = os.path.join(folder_name, name)
         with open(path, 'wb') as online_file:
             online_file.write(data)
             if self.crawlingUrl in self.toCrawlUrls:
