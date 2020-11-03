@@ -3,7 +3,8 @@
 import sys
 import os
 import re
-from urllib.parse import urlparse
+from time import sleep
+from urllib.parse import urlparse, unquote
 from urllib.request import urlopen
 
 import chardet
@@ -53,6 +54,8 @@ class Main():
         self.crawledExtUrls = []
         self.downloadedExtUrls = []
 
+        self.stop = False
+
         # Replacement Data
         self.replacedDownloadedStringData = ""
 
@@ -94,6 +97,7 @@ class Main():
         else:
             print('get_address: err')
             self.toCrawlUrls.remove(self.crawlingUrl)
+            self.crawledUrls.append(self.crawlingUrl)
             return False
 
         # fix add
@@ -114,6 +118,7 @@ class Main():
         if self._exist(self.passedUrl):
             print(f'{self.passedUrl} has already been downloaded. Skipping')
             self.toCrawlUrls.remove(self.crawlingUrl)
+            self.crawledUrls.append(self.crawlingUrl)
             return False
 
         # Download
@@ -133,6 +138,10 @@ class Main():
             else:
                 self._store_bytes_data(data)
                 self._save_data_offline(self.downloadedBytesData)
+        else:
+            print(f'{self.passedUrl} was not downloaded. Skipping')
+            self.toCrawlUrls.remove(self.crawlingUrl)
+            self.crawledUrls.append(self.crawlingUrl)
 
         self._check_for_more_urls()
         self._clear()
@@ -197,6 +206,7 @@ class Main():
     def _store_common_name(self, old, addr):
         print('Inside _store_common_name\n')
 
+        old_crawling_url = self.crawlingUrl
         cmnName = ''
         scheme, netloc, path, params, query, fragment = urlparse(addr)
         self.domain = netloc
@@ -212,11 +222,19 @@ class Main():
         self.commonPath = paths[0]
 
         self.crawlingUrl = self.commonPath + '/' + addr.rsplit('/', 1)[-1]
+        self.stop = False
         # handle redirection
         if old != addr:
-            if old in self.toCrawlUrls:
-                ind = self.toCrawlUrls.index(old)
+            self.stop = True
+            print(f'yep {old} {addr}')
+            print(old_crawling_url, self.crawlingUrl)
+            print('up')
+            if old_crawling_url in self.toCrawlUrls:
+                self.toCrawlUrls = list(set(self.toCrawlUrls))
+                ind = self.toCrawlUrls.index(old_crawling_url)
                 self.toCrawlUrls[ind] = self.crawlingUrl
+                self.crawledUrls.append(self.crawlingUrl)
+                return False
         return True
 
     def _check_protocol(self, web_addr):
@@ -245,10 +263,11 @@ class Main():
             return False
 
         # check common name
-        self._store_common_name(link, req.geturl())
-
-        data = req.read()
-        return data
+        if self._store_common_name(link, req.geturl()):
+            data = req.read()
+            return data
+        else:
+            return False
 
     def _download_ext_data(self, link):
         print('Inside _download_ext_data\n')
@@ -328,6 +347,10 @@ class Main():
                     if ext in self.allowedExtExt:
                         found_ext.append(o)
 
+        # avoid duplicates
+        found_local = list(set(found_local))
+        found_ext = list(set(found_ext))
+
         self.crawledUrls.append(self.crawlingUrl)
         self.newlyFoundUrls.extend(found_local)
         self.newlyFoundExtUrls.extend(found_ext)
@@ -406,6 +429,10 @@ class Main():
 
         # local
         self.newlyFoundUrls = []
+        self.toCrawlUrls = self.toCrawlUrls[0:]
+        self.crawledUrls.append(self.crawlingUrl)
+        self.crawledUrls = list(set(self.crawledUrls))
+        print('added to crawled', self.crawlingUrl)
         self.crawlingUrl = ''
         # external
         self.newlyFoundExtUrls = []
@@ -417,28 +444,35 @@ class Main():
         print('inside _handle_external\n')
         # carefully process links that are external
         for link in links:
-            data = self._download_ext_data(link)
-            self._save_ext_data_offline(data, link)
+            #data = self._download_ext_data(link)
+            #self._save_ext_data_offline(data, link)
+            pass
 
     def _repeat_process(self):
         print('Inside _repeat_process\n')
+        #count = 0
         while self.toCrawlUrls:
             # Take the first one
             # the first one should change all the time
             curr = self.toCrawlUrls[0]
+            print(curr)
             if curr not in self.downloadedUrls and \
                 curr not in self.crawledUrls:
+                self.crawlingUrl = curr
                 # this function is local so we can just add a '/'
                 if curr[0] != '/':
                     curr = '/' + curr
 
                 web_addr = self.currScheme + \
                 self.domain + curr
-            print(f'About to start on {web_addr}')
-            self.crawlingUrl = curr
-            self.start(web_addr)
-            break
+                print(f'About to start on {web_addr}')
+
+                self.start(web_addr)
+                """if count > 120:
+                    break
+                count += 1"""
 
 main = Main()
 #main.prepare("https://localhost/img/module_table_bottom.png")
-main.prepare("https://localhost/")
+main.prepare("https://localhost/dashboard/docs/")
+
