@@ -176,6 +176,9 @@ class Main():
 
     def _download_ext_data(self, link):
         print('Inside _download_data\n')
+        if not link.startswith('http'):
+            link = 'http:' + link
+
         req = urlopen(link)
 
         data = req.read()
