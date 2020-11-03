@@ -188,17 +188,24 @@ class Main():
 
         return True
 
-    def _store_common_name(self, addr):
+    def _store_common_name(self, old, addr):
         print('Inside _store_common_name\n')
+
         cmnName = ''
         scheme, netloc, path, params, query, fragment = urlparse(addr)
         self.domain = netloc
         self.currScheme = scheme + '://'
 
-        self.commonName = addr.rsplit('/', 1)[-1]
-        self.commonPath = path.rsplit('/', 1)[0]
+        paths = path.rsplit('/', 1)
+        if not paths[-1]:
+            cmnName = 'index.html'
+        else:
+            cmnName = paths[-1]
 
-        self.crawlingUrl = self.commonPath + '/' + self.commonName
+        self.commonName = cmnName
+        self.commonPath = paths[0]
+
+        self.crawlingUrl = self.commonPath + '/' + addr.rsplit('/', 1)[-1]
         # handle redirection
         if old != addr:
             if old in self.toCrawlUrls:
