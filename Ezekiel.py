@@ -216,8 +216,11 @@ class Main():
 
     def _store_bytes_data(self, data):
         print('Inside _store_bytes_data\n')
-        # pass
-        pass
+        # Rethink this function
+        # might load memory
+        # or even cause troubles
+        # maybe with parser because its getting stored
+        self.downloadedBytesData = data
 
     def _parser(self, data):
         print('Inside _parser\n')
