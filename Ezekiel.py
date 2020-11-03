@@ -131,6 +131,20 @@ class Main():
         self._check_for_more_urls()
         self._clear()
 
+    def _exist(self, web_addr):
+        print('Inside _exist\n')
+        # Currently we only check for absolute files
+        # eg. localhost/mysite/index.html
+        # and not paths like localhost/mysite
+
+        _, netloc, path, _, _, _ = urlparse(web_addr)
+        paths = path.rsplit('/', 1)
+        if not paths[-1]:
+            return False
+        filepath = os.path.realpath(self.store_folder + '/' + netloc + path)
+        if os.path.exists(filepath):
+            return True
+
     def _beyound_top_level(self, web_addr):
         print('Inside _check_top_level\n')
         # Check to see if the addr
