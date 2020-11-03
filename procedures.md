@@ -6,6 +6,8 @@
 - fix the url
 - Check url protocol on the fixed url
 
+- check to make sure file does not exist on disc
+
 - download the data
 - store common name
 - check type of data
