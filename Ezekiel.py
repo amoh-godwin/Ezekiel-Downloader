@@ -347,12 +347,8 @@ class Main():
         folder_name = self.domainFolder + self.commonPath
         if not os.path.exists(folder_name):
             os.makedirs(folder_name)
-        
-        if self.commonName:
-            name = self.commonName
-        else:
-            name = 'index.html'
-        path = os.path.join(folder_name, name)
+        path = os.path.join(folder_name, self.commonName)
+
         with open(path, 'wb') as online_file:
             online_file.write(data)
             if self.crawlingUrl in self.toCrawlUrls:
