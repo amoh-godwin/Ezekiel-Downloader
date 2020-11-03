@@ -316,6 +316,7 @@ class Main():
 
         # local
         self.newlyFoundUrls = []
+        self.crawlingUrl = ''
         # external
         self.newlyFoundExtUrls = []
 
