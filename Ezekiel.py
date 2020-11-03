@@ -126,7 +126,7 @@ class Main():
         self._check_for_more_urls()
         self._clear()
 
-    def _check_top_level(self, web_addr):
+    def _beyound_top_level(self, web_addr):
         print('Inside _check_top_level\n')
         # Check to see if the addr
         # goes beyound the level of
