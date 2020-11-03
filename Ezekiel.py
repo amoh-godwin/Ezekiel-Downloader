@@ -374,7 +374,7 @@ class Main():
         # put all links if any in toCrawlUrls
         if self.newlyFoundUrls:
             self.toCrawlUrls.extend([u \
-                for u in self.newlyFoundUrls \
+                for u in self.newlyFoundUrls if u \
                 if u not in self.toCrawlUrls \
                 if not u.startswith('#')])
             return True
