@@ -226,7 +226,7 @@ class Main():
         found_local = []
         found_ext = []
         for tag in self.htmlLinkPatt:
-            patt = r'' + tag + '=["|\'].*?.*?.*?["|\']'
+            patt = r'' + tag + r'\s*=\s*["|\'].*?.*?.*?["|\']'
             attr_links = re.findall(patt, data)
             s_ind = len(tag) + 2
             l_ind = -1
