@@ -19,7 +19,7 @@ class Main():
         self.store_folder = os.path.join(os.environ["USERPROFILE"], 'Ezekiel')
         self.domainFolder = ''
 
-        self.FILTER_WORDS = {'': ""}
+        self.FILTER_WORDS = {'&amp;': "&"}
         self.ILLEGAL_CHARS_PATN = r'[;]'
         self.StoreSiteNameAndRepl = {}    # this stores sitename and its replacement that we used
         self.topLevelDepth = 0
