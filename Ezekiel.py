@@ -103,6 +103,7 @@ class Main():
                 self._save_data_offline(self.replacedDownloadedStringData)
                 self._handle_external(self.newlyFoundExtUrls)
                 self._check_for_more_urls()
+                self._clear()
         else:
             self._store_bytes_data(data)
 
@@ -308,8 +309,18 @@ class Main():
 
     def _clear(self):
         print('Inside _clear\n')
-        # pass
-        pass
+        # Clear all variable that must be empty for the next process
+        # Data
+        self.downloadedStringData = ""
+        self.downloadedBytesData = b""
+
+        # local
+        self.newlyFoundUrls = []
+        # external
+        self.newlyFoundExtUrls = []
+
+        # Replacement Data
+        self.replacedDownloadedStringData = ""
 
     def _handle_external(self, links):
         print('inside _handle_external')
