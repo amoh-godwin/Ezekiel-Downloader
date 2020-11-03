@@ -343,8 +343,14 @@ class Main():
 
     def _repeat_process(self):
         print('Inside _repeat_process\n')
-        # pass
-        pass
+        while self.toCrawlUrls:
+            # Take the first one
+            # the first one should change all the time
+            web_addr = self.currScheme + \
+                self.domain + self.toCrawlUrls[0]
+            print(f'About to start on {web_addr}')
+            self.start(web_addr)
+            break
 
 main = Main()
 #main.prepare("https://localhost/img/module_table_bottom.png")
