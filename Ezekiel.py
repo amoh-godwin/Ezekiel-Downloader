@@ -106,6 +106,11 @@ class Main():
         # protocol
         self._check_protocol(self.fixedUrl)
 
+        # check the top level
+        if self._beyound_top_level(self.passedUrl):
+            print("Beyound Top level, won't crawl")
+            return False
+
         # Download
         data = self._download_data(self.passedUrl)
         # Check if html, css or image. Basically string or bytes
@@ -133,7 +138,7 @@ class Main():
         # the entered webpage
         _, _, path, _, _, _ = urlparse(web_addr)
         depth = [n for n in path.split('/') if n]
-        if len(depth) >= self.topLevelDepth:
+        if len(depth) < self.topLevelDepth:
             return True
 
     def get_address(self, webpage_addr):
