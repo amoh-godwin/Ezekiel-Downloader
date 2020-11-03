@@ -245,7 +245,7 @@ class Main():
             for o in all_links:
                 if o not in found_local \
                 and o not in self.downloadedExtUrls:
-                    sch, netl, path, query, pms, frag = urlparse(o)
+                    _, _, path, _, _, _ = urlparse(o)
                     ext = os.path.splitext(path)[-1]
                     if ext in self.allowedExtExt:
                         found_ext.append(o)
