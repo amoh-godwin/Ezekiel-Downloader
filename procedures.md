@@ -16,7 +16,8 @@
 - check if parsable
 - parse to
   - gather more urls
-  - replace data ++++
+  - construct fullpath
+  - replace data
 
 - Save the data
 
