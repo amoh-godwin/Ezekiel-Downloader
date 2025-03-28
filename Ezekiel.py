@@ -372,8 +372,9 @@ class Main():
             data = data.replace(
                 bytes(link, 'utf-8'), bytes(new_link, 'utf-8'))
         # Local
+        print(f'{self.newlyFoundUrls=:}')
         for link in self.newlyFoundUrls:
-            if link[0] != '/':
+            if link.startswith('/'):
                 new_link = './' + link
             else:
                 new_link = '..' + link
