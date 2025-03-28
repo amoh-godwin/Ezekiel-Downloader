@@ -475,7 +475,7 @@ class Main():
                     break
                 count += 1"""
 
-main = Main()
-#main.prepare("https://localhost/img/module_table_bottom.png")
-main.prepare("https://localhost/dashboard/docs/")
 
+main = Main()
+# main.prepare("https://localhost/img/module_table_bottom.png")
+main.prepare("https://www.jetpackcompose.net/home/categories/basics")
